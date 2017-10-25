@@ -22,8 +22,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/users")
 public class UsersResourceController {
-  
     
-    
-    
+    @Autowired
+    GameServices gameServices;
+
+    @RequestMapping(path = "/{idUsuario}", method = RequestMethod.GET)
+    public ResponseEntity<?> getCurrentWord(@PathVariable Integer idUsuario){
+        try {    
+            return new ResponseEntity<>(gameServices.loadUserData(idUsuario),HttpStatus.ACCEPTED);
+        } catch (GameServicesException ex) {
+            return new ResponseEntity<>(ex.getLocalizedMessage(),HttpStatus.NOT_FOUND);
+        }
+    }   
 }

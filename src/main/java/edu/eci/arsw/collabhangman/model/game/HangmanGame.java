@@ -40,7 +40,8 @@ public class HangmanGame {
      * @param l new letter
      * @return the secret word with all the characters 'l' revealed
      */
-    public String addLetter(char l){                
+    public String addLetter(char l){   
+        System.out.println("palabraaa:"+word);
         for (int i=0;i<word.length();i++){
             if (word.charAt(i)==l){
                 guessedWord[i]=l;

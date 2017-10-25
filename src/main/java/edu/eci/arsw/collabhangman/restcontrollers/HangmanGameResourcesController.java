@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,7 +69,7 @@ public class HangmanGameResourcesController {
             String tmp =gameServices.addLetterToGame(gameid, hga.getLetter());
             
             LOG.log(Level.INFO, "Getting letter from client {0}:{1}", new Object[]{hga.getUsername(), hga.getLetter()});
-
+            msmt.convertAndSend("/topic/wupdate."+gameid, tmp);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (GameServicesException ex) {
@@ -86,6 +87,10 @@ public class HangmanGameResourcesController {
             
             LOG.log(Level.INFO, "Getting word from client {0}:{1}", new Object[]{hwa.getUsername(), hwa.getWord()});
             
+            if(win){
+                msmt.convertAndSend("/topic/winner."+gameid, hwa.getUsername());
+                msmt.convertAndSend("/topic/wupdate."+gameid, hwa.getWord());
+            }
             
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (GameServicesException ex) {
