@@ -1,27 +1,26 @@
 var app = (function () {
 
-    var nombreJugador="";
-    
+    var nombreJugador = "";
+
     var stompClient = null;
     var gameid = 0;
-    
-    var callback_palabraActualizada=function(message) {
-        var palabra=message.body;
+
+    var callback_palabraActualizada = function (message) {
+        var palabra = message.body;
         $("#palabra h1").text(palabra);
     };
-    var callback_setWinner=function(message) {
-        var nombreGanador=message.body;
+    var callback_setWinner = function (message) {
+        var nombreGanador = message.body;
         $("#status  > div:nth-child(1)").text("Estado: Terminado");
-        $("#status  > div:nth-child(2)").text("Ganador: "+nombreGanador+".");
+        $("#status  > div:nth-child(2)").text("Ganador: " + nombreGanador + ".");
     };
 
     return {
-
         loadWord: function () {
 
             gameid = $("#gameid").val();
-            
-            $.get("/hangmangames/" + gameid +"/currentword",
+
+            $.get("/hangmangames/" + gameid + "/currentword",
                     function (data) {
                         $("#palabra").html("<h1>" + data + "</h1>");
                         app.wsconnect();
@@ -40,30 +39,47 @@ var app = (function () {
 
             var socket = new SockJS('/stompendpoint');
             stompClient = Stomp.over(socket);
-            stompClient.connect({}, function (frame) {
+            stompClient.connect("sstmfolm", "bpP4scrs1wzuOJcIeTetBdHh_SWs3A8B",
+                    function (frame) {
+                        console.log('Connected: ' + frame);
+                        stompClient.subscribe('/topic/wupdate.' + gameid, function (eventbody) {
+                            callback_palabraActualizada(eventbody);
+                        });
+                        stompClient.subscribe('/topic/winner.' + gameid, function (eventbody) {
+                            callback_setWinner(eventbody);
+                        });
 
-                console.log('Connected: ' + frame);
+                    }
+            ,
+                    function (error) {
+                        console.info("error" + error);
+                    }
 
-                //lo suscribimos para el estado de la palabra
-                stompClient.subscribe('/topic/wupdate.'+gameid, function (eventbody) {
-                    callback_palabraActualizada(eventbody);
-                });
+            , "gmmufdcu");
 
-                //lo suscribimos para el ganador
-                stompClient.subscribe('/topic/winner.'+gameid, function (eventbody) {
-                    callback_setWinner(eventbody);
-                });
-            });
+
+            /**stompClient.connect({}, function (frame) {
+             console.log('Connected: ' + frame);
+             
+             //lo suscribimos para el estado de la palabra
+             stompClient.subscribe('/topic/wupdate.'+gameid, function (eventbody) {
+             callback_palabraActualizada(eventbody);
+             });
+             
+             //lo suscribimos para el ganador
+             stompClient.subscribe('/topic/winner.'+gameid, function (eventbody) {
+             callback_setWinner(eventbody);
+             });
+             });*/
 
         },
-
         sendLetter: function () {
             //no lo dejamos continuar si no tiene el nombre aún
-            if(nombreJugador==""){
+            if (nombreJugador == "") {
                 alert("ingresar usuario primero");
                 return false;
             }
-            if($("#caracter").val()==""){
+            if ($("#caracter").val() == "") {
                 alert("ingresar letra primero");
                 return false;
             }
@@ -71,7 +87,7 @@ var app = (function () {
 
             var hangmanLetterAttempt = {letter: $("#caracter").val(), username: nombreJugador};
 
-            console.info("Gameid:"+gameid+",Sending v2:"+JSON.stringify(hangmanLetterAttempt));
+            console.info("Gameid:" + gameid + ",Sending v2:" + JSON.stringify(hangmanLetterAttempt));
 
 
             jQuery.ajax({
@@ -87,11 +103,10 @@ var app = (function () {
 
 
         },
-
         sendWord: function () {
-            
-            var hangmanWordAttempt = {word: $("#adivina").val(), username:nombreJugador};
-            
+
+            var hangmanWordAttempt = {word: $("#adivina").val(), username: nombreJugador};
+
             var id = gameid;
 
             jQuery.ajax({
@@ -105,17 +120,17 @@ var app = (function () {
                 }
             });
 
-            
+
         },
         /**
          * encargado de pedir el id y enviarlo por REST para recoger datos del usuario (nombre, foto ...)
          * @returns {undefined}
          */
-        setIdJugador:function(){
-            var id_jugador=$("#playerid").val();
+        setIdJugador: function () {
+            var id_jugador = $("#playerid").val();
 
             jQuery.ajax({
-                url: "/users/"+id_jugador,
+                url: "/users/" + id_jugador,
                 type: "GET",
                 data: null,
                 dataType: "json",
@@ -124,11 +139,11 @@ var app = (function () {
                     //mostramos el nombre
                     $("#datosjugador > div:nth-child(2)").text(data.name);
                     //guardamos nombre
-                    nombreJugador=data.name;
+                    nombreJugador = data.name;
                     //mostramos la img
-                    $("#datosjugador img").attr("src",data.photoUrl);
+                    $("#datosjugador img").attr("src", data.photoUrl);
                 },
-                error:function (){
+                error: function () {
                     alert("id de usuario incorrecto");
                 }
             });

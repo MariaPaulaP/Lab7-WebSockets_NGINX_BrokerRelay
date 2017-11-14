@@ -32,13 +32,23 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic");
+        //config.enableSimpleBroker("/topic");
+        //config.enableStompBrokerRelay("/topic/").setRelayHost("192.168.56.101").setRelayPort(61613);
+        //config.setApplicationDestinationPrefixes("/app");
+        config.enableStompBrokerRelay("/topic/").setRelayHost("elephant.rmq.cloudamqp.com").setRelayPort(61613).
+                setClientLogin("sstmfolm").
+                setClientPasscode("bpP4scrs1wzuOJcIeTetBdHh_SWs3A8B").
+                setSystemLogin("sstmfolm").
+                setSystemPasscode("bpP4scrs1wzuOJcIeTetBdHh_SWs3A8B").
+                setVirtualHost("sstmfolm");
+
         config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/stompendpoint").withSockJS();
+        //registry.addEndpoint("/stompendpoint").withSockJS();
+        registry.addEndpoint("/stompendpoint").setAllowedOrigins("*").withSockJS();
     }
 
 }
