@@ -1,5 +1,6 @@
 var app = (function () {
 
+
     var nombreJugador = "";
 
     var stompClient = null;
@@ -39,6 +40,7 @@ var app = (function () {
 
             var socket = new SockJS('/stompendpoint');
             stompClient = Stomp.over(socket);
+
             stompClient.connect("sstmfolm", "bpP4scrs1wzuOJcIeTetBdHh_SWs3A8B",
                     function (frame) {
                         console.log('Connected: ' + frame);
@@ -80,6 +82,7 @@ var app = (function () {
                 return false;
             }
             if ($("#caracter").val() == "") {
+
                 alert("ingresar letra primero");
                 return false;
             }
@@ -88,6 +91,7 @@ var app = (function () {
             var hangmanLetterAttempt = {letter: $("#caracter").val(), username: nombreJugador};
 
             console.info("Gameid:" + gameid + ",Sending v2:" + JSON.stringify(hangmanLetterAttempt));
+
 
 
             jQuery.ajax({
@@ -107,6 +111,7 @@ var app = (function () {
 
             var hangmanWordAttempt = {word: $("#adivina").val(), username: nombreJugador};
 
+
             var id = gameid;
 
             jQuery.ajax({
@@ -120,12 +125,12 @@ var app = (function () {
                 }
             });
 
-
         },
         /**
          * encargado de pedir el id y enviarlo por REST para recoger datos del usuario (nombre, foto ...)
          * @returns {undefined}
          */
+
         setIdJugador: function () {
             var id_jugador = $("#playerid").val();
 
@@ -139,11 +144,13 @@ var app = (function () {
                     //mostramos el nombre
                     $("#datosjugador > div:nth-child(2)").text(data.name);
                     //guardamos nombre
+
                     nombreJugador = data.name;
                     //mostramos la img
                     $("#datosjugador img").attr("src", data.photoUrl);
                 },
                 error: function () {
+
                     alert("id de usuario incorrecto");
                 }
             });

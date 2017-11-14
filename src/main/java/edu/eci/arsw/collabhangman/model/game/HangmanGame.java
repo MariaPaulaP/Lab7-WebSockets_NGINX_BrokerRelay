@@ -23,9 +23,12 @@ package edu.eci.arsw.collabhangman.model.game;
 public class HangmanGame {
     
     private final String word;
-    private char[] guessedWord;
-    private String winner="";
-    private boolean gameFinished=false;
+    //private char[] guessedWord;
+    //private String winner="";
+    //private boolean gameFinished=false;
+    protected char[] guessedWord;
+    protected String winner="";
+    protected boolean gameFinished=false;
 
     public HangmanGame(String word) {
         this.word=word.toLowerCase();

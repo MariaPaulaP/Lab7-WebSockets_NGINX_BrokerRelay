@@ -5,18 +5,19 @@
  */
 package edu.eci.arsw.collabhangman.cache;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.data.redis.core.StringRedisTemplate;
-
+import edu.eci.arsw.collabhangman.model.game.HangmanGame;
 
 /**
  *
  * @author 2095957
  */
-public class GameStateRedisCache {
-
-    @Autowired
-    private StringRedisTemplate template;
+public class HangmanRedisGame extends HangmanGame{
+    
+    public HangmanRedisGame(String word) {
+        super(word);
     }
-
+    
+    
+    
+   
+}
