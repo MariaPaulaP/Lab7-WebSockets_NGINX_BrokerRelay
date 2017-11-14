@@ -21,6 +21,7 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import edu.eci.arsw.collabhangman.cache.GameStateCache;
+import edu.eci.arsw.collabhangman.cache.GameStateRedisCache;
 import edu.eci.arsw.collabhangman.model.game.entities.User;
 import edu.eci.arsw.collabhangman.persistence.PersistenceException;
 import edu.eci.arsw.collabhangman.persistence.UsersRepository;
@@ -36,8 +37,9 @@ import java.util.Set;
 public class GameServices {
 
     //cache con los datos volatiles del juego
+    
     @Autowired
-    GameStateCache cache;
+     GameStateRedisCache cache;
     
     //repositorios (capa de persistencia)
     @Autowired
@@ -47,7 +49,7 @@ public class GameServices {
     WordsRepository wordsRepository;
 
    
-    private Random random;
+    private final Random random;
 
     public GameServices() {
         random=new Random(System.currentTimeMillis());
