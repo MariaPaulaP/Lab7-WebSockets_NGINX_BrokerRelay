@@ -16,6 +16,7 @@
  */
 package edu.eci.arsw.collabhangman.restcontrollers;
 
+import edu.eci.arsw.collabhangman.cache.stub.RedisCacheException;
 import edu.eci.arsw.collabhangman.model.game.entities.HangmanLetterAttempt;
 import edu.eci.arsw.collabhangman.model.game.entities.HangmanWordAttempt;
 import edu.eci.arsw.collabhangman.services.GameServicesException;
@@ -54,7 +55,7 @@ public class HangmanGameResourcesController {
     }
     
     @RequestMapping(path = "/{gameid}/currentword", method = RequestMethod.GET)
-    public ResponseEntity<?> getCurrentWord(@PathVariable Integer gameid){
+    public ResponseEntity<?> getCurrentWord(@PathVariable Integer gameid) throws RedisCacheException{
         try {    
             return new ResponseEntity<>(gameServices.getCurrentGuessedWord(gameid),HttpStatus.ACCEPTED);
         } catch (GameServicesException ex) {
@@ -63,7 +64,7 @@ public class HangmanGameResourcesController {
     }
     
     @RequestMapping(path = "/{gameid}/letterattempts", method = RequestMethod.POST)
-    public ResponseEntity<?> tryLetterInGame(@PathVariable Integer gameid, @RequestBody HangmanLetterAttempt hga){
+    public ResponseEntity<?> tryLetterInGame(@PathVariable Integer gameid, @RequestBody HangmanLetterAttempt hga) throws RedisCacheException{
         try {
 
             String tmp =gameServices.addLetterToGame(gameid, hga.getLetter());
@@ -80,7 +81,7 @@ public class HangmanGameResourcesController {
     private static final Logger LOG = Logger.getLogger(HangmanGameResourcesController.class.getName());
     
     @RequestMapping(path = "/{gameid}/wordattempts", method = RequestMethod.POST)
-    public ResponseEntity<?> attemptAWord(@PathVariable Integer gameid, @RequestBody HangmanWordAttempt hwa){
+    public ResponseEntity<?> attemptAWord(@PathVariable Integer gameid, @RequestBody HangmanWordAttempt hwa) throws RedisCacheException{
         try {
 
             boolean win=gameServices.guessWord(hwa.getUsername(),gameid, hwa.getWord());

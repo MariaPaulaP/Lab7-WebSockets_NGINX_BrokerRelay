@@ -21,7 +21,8 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import edu.eci.arsw.collabhangman.cache.GameStateCache;
-import edu.eci.arsw.collabhangman.cache.GameStateRedisCache;
+import edu.eci.arsw.collabhangman.cache.stub.GameStateRedisCache;
+import edu.eci.arsw.collabhangman.cache.stub.RedisCacheException;
 import edu.eci.arsw.collabhangman.model.game.entities.User;
 import edu.eci.arsw.collabhangman.persistence.PersistenceException;
 import edu.eci.arsw.collabhangman.persistence.UsersRepository;
@@ -39,7 +40,7 @@ public class GameServices {
     //cache con los datos volatiles del juego
     
     @Autowired
-     GameStateRedisCache cache;
+     GameStateCache cache;
     
     //repositorios (capa de persistencia)
     @Autowired
@@ -90,7 +91,7 @@ public class GameServices {
      * @throws GameServicesException si el identificador dado no corresponde
      * a una partida existente.
      */
-    public String addLetterToGame(int gameid,char letter) throws GameServicesException{
+    public String addLetterToGame(int gameid,char letter) throws GameServicesException, RedisCacheException{
         return cache.getGame(gameid).addLetter(letter);
     }
     
@@ -104,7 +105,7 @@ public class GameServices {
      * @throws GameServicesException si el identificador dado no corresponde
      * a una partida existente.
      */
-    public String getCurrentGuessedWord(int gameid) throws GameServicesException{
+    public String getCurrentGuessedWord(int gameid) throws GameServicesException, RedisCacheException{
         return cache.getGame(gameid).getCurrentGuessedWord();
     }
     
@@ -120,7 +121,7 @@ public class GameServices {
      * @throws GameServicesException si el identificador dado no corresponde
      * a una partida existente.
      */
-    public boolean guessWord(String playerName,int gameid,String word) throws GameServicesException{
+    public boolean guessWord(String playerName,int gameid,String word) throws GameServicesException, RedisCacheException{
         return cache.getGame(gameid).tryWord(playerName,word);
     }
     
@@ -132,7 +133,7 @@ public class GameServices {
      * @throws GameServicesException si el identificador dado no corresponde
      * a una partida existente.
      */
-    public boolean isGameFinished(int gameid) throws GameServicesException{
+    public boolean isGameFinished(int gameid) throws GameServicesException, RedisCacheException{
         return cache.getGame(gameid).gameFinished();
     }
     

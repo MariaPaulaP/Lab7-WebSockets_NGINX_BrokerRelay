@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.eci.arsw.collabhangman.cache;
+package edu.eci.arsw.collabhangman.cache.stub;
 
+import edu.eci.arsw.collabhangman.cache.GameStateCache;
+import edu.eci.arsw.collabhangman.model.game.HangmanGame;
 import edu.eci.arsw.collabhangman.services.GameCreationException;
 import edu.eci.arsw.collabhangman.services.GameServicesException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +20,17 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class GameStateRedisCache {
+public class GameStateRedisCache implements GameStateCache{
 
     @Autowired
     private StringRedisTemplate template;
     
+    @Override
     public void createGame(int id,String word) throws GameCreationException{
-    };
-
-    public HangmanRedisGame getGame(int gameid) throws GameServicesException {
-        return new HangmanRedisGame(gameid, template);
-    };
+    }
+    @Override
+    public HangmanGame getGame(int gameid) throws GameServicesException {
+        return new HangmanRedisGame(String.valueOf(gameid), template);
+    }
+    
 }

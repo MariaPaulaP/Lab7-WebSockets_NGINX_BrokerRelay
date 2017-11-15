@@ -22,18 +22,17 @@ import edu.eci.arsw.collabhangman.services.GameServicesException;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Service;
 import edu.eci.arsw.collabhangman.cache.GameStateCache;
-import edu.eci.arsw.collabhangman.cache.GameStateCache;
 
 /**
  *
  * @author hcadavid
  */
-@Service
+
 public class InMemoryGamesStatePersistence implements GameStateCache{
     
     private final ConcurrentHashMap<Integer,HangmanGame> gamesState;
     
-    public InMemoryGamesStatePersistence(){
+    public InMemoryGamesStatePersistence() throws RedisCacheException{
         gamesState=new ConcurrentHashMap<>();
         preloadGames();
     }
@@ -60,12 +59,11 @@ public class InMemoryGamesStatePersistence implements GameStateCache{
         
     }
     
-    private void preloadGames(){
+    private void preloadGames() throws RedisCacheException{
         HangmanGame hg=new HangmanGame("happiness");
         hg.addLetter('h');
         hg.addLetter('e');
-        gamesState.put(1, hg);
-        
+        gamesState.put(1, hg);        
         gamesState.put(2, new HangmanGame("foot"));
         gamesState.put(3, new HangmanGame("player"));
         gamesState.put(4, new HangmanGame("winner"));        

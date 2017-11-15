@@ -37,7 +37,7 @@ var app = (function () {
         }
         ,
         wsconnect: function () {
-
+            
             var socket = new SockJS('/stompendpoint');
             stompClient = Stomp.over(socket);
 

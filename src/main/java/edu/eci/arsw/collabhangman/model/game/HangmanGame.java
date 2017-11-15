@@ -16,13 +16,16 @@
  */
 package edu.eci.arsw.collabhangman.model.game;
 
+import edu.eci.arsw.collabhangman.cache.stub.RedisCacheException;
+
+
 /**
  *
  * @author hcadavid
  */
 public class HangmanGame {
     
-    private final String word;
+    protected final String word;
     //private char[] guessedWord;
     //private String winner="";
     //private boolean gameFinished=false;
@@ -43,7 +46,7 @@ public class HangmanGame {
      * @param l new letter
      * @return the secret word with all the characters 'l' revealed
      */
-    public String addLetter(char l){   
+    public String addLetter(char l) throws RedisCacheException{   
         System.out.println("palabraaa:"+word);
         for (int i=0;i<word.length();i++){
             if (word.charAt(i)==l){
@@ -53,7 +56,7 @@ public class HangmanGame {
         return new String(guessedWord);
     }
     
-    public synchronized boolean tryWord(String playerName,String s){
+    public synchronized boolean tryWord(String playerName,String s)throws RedisCacheException{
         if (s.toLowerCase().equals(word)){
             winner=playerName;
             gameFinished=true;
@@ -63,7 +66,7 @@ public class HangmanGame {
         return false;
     }
     
-    public boolean gameFinished(){
+    public boolean gameFinished()throws RedisCacheException{
         return gameFinished;
     }
     
@@ -75,7 +78,7 @@ public class HangmanGame {
         return winner;
     }
     
-    public String getCurrentGuessedWord(){
+    public String getCurrentGuessedWord()throws RedisCacheException{
         return new String(guessedWord);
     }    
     
