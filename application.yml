@@ -1,6 +1,12 @@
-spring:
-    redis:
-        host: 127.0.0.1
-        port: 6379
-        #password:
+ spring:
+   data:
+     mongodb:
+       host: ds115866.mlab.com
+       port: 37101
+       database: hangman
+       username: test
+       password: test  	
+ redis:
+   host: 192.168.56.101
+   port: 6379
 

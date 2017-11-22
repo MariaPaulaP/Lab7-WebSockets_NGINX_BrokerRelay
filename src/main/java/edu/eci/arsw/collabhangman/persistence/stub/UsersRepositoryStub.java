@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
 /**
  *
  * @author hcadavid
- */
-@Service
+ *
+//@Service
 public class UsersRepositoryStub implements UsersRepository{
 
     private static Map<Integer,User> usersdb;
@@ -47,4 +47,4 @@ public class UsersRepositoryStub implements UsersRepository{
     
 
     
-}
+}*/

@@ -6,16 +6,16 @@
 package edu.eci.arsw.collabhangman.persistence;
 
 import edu.eci.arsw.collabhangman.model.game.entities.User;
+import java.io.Serializable;
 import java.util.Set;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 
 /**
  *
  * @author hcadavid
  */
-public interface UsersRepository {
+public interface UsersRepository extends MongoRepository<User, Integer> {
 
-    public User getUserByID(Integer id) throws PersistenceException;   
-    
-    public Set<User> getAllUsers();
+    public User findById(Integer id) throws PersistenceException;
 }
