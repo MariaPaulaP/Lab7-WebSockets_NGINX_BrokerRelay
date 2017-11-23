@@ -2,6 +2,8 @@ var app = (function () {
 
 
     var nombreJugador = "";
+    var puntaje = 0;
+    var maxPuntaje = 100;
 
     var stompClient = null;
     var gameid = 0;

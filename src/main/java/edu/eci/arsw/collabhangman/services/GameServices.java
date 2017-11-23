@@ -148,6 +148,14 @@ public class GameServices {
     public String getGameWinner(int gameid) throws GameServicesException{
         return cache.getGame(gameid).getWinnerName();
     }
+
+    public User getPuntajeMaximo(Integer idUsuario) throws PersistenceException {
+        //System.out.println("ESTO:"+usersRepository.findByScoreRecent(userid).getScores().get(1));
+        return usersRepository.findByScoreRecent(idUsuario);
+    }
+        public Set<User> getUsuarioConPuntajeMas(int score) throws PersistenceException{
+        return usersRepository.findByScoreGreaterThan(score);
+   }
     
   
     

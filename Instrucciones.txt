@@ -1,0 +1,17 @@
+Instrucciones llaves de REDIS:
+
+HMSET game:1 word happiness guessedword happ_n_ss gameFinished false winner ""
+
+HMSET game:2 word foot guessedword _oot gameFinished false winner ""
+
+HMSET game:3 word player guessedword pla_e_ gameFinished false winner ""
+
+Usuarios creados en MongoDB:
+112233
+223344
+
+
+
+
+
+

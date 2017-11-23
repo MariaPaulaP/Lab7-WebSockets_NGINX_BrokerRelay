@@ -5,6 +5,9 @@
  */
 package edu.eci.arsw.collabhangman.model.game.entities;
 
+import edu.eci.arsw.collabhangman.model.game.Score;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,20 +15,24 @@ import org.springframework.data.mongodb.core.mapping.Document;
  *
  * @author hcadavid
  */
-
 @Document(collection = "users")
 public class User {
+
     @Id
     private int id;
-    
+
     private String name;
-    
+
     private String photoUrl;
+    private List<Score> scores;
+    private long puntajeMaximo;
 
     public User(int id, String name, String photoUrl) {
         this.id = id;
         this.name = name;
         this.photoUrl = photoUrl;
+        this.scores = new ArrayList<>();
+        this.puntajeMaximo = 0;
     }
 
     public User() {
@@ -54,7 +61,21 @@ public class User {
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
-    
-    
-    
+
+    public List<Score> getScores() {
+        return scores;
+    }
+
+    public void setScores(List<Score> scores) {
+        this.scores = scores;
+    }
+
+    public long getPuntajeMaximo() {
+        return puntajeMaximo;
+    }
+
+    public void setPuntajeMaximo(long puntajeMaximo) {
+        this.puntajeMaximo = puntajeMaximo;
+    }
+
 }
